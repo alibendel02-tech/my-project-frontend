@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maame Afua & Akoi Barimah — Wedding & Guestbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ============ DESIGN TOKENS ============ */
+:root{
+  --ink: #2B2320;
+  --parchment: #FBF6EE;
+  --parchment-deep: #F3EBDC;
+  --sage: #8A9A7E;
+  --sage-deep: #66765B;
+  --rose: #C98A7D;
+  --gold: #B58A4A;
+  --white: #FFFFFF;
+  --line: rgba(43,35,32,0.15);
+  --shadow: 0 20px 60px rgba(43,35,32,0.12);
+  --serif: 'Cormorant Garamond', serif;
+  --sans: 'Jost', sans-serif;
+  --maxw: 1120px;
+}
+
+[data-theme="dark"] {
+  --ink: #F3EFEA;
+  --parchment: #1A1817;
+  --parchment-deep: #242120;
+  --sage: #9BAA8F;
+  --sage-deep: #B0C0A4;
+  --rose: #E0A396;
+  --gold: #D4AF37;
+  --white: #2C2927;
+  --line: rgba(243,239,234,0.15);
+  --shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--parchment);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-weight:300;
+  overflow-x:hidden;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+::selection{background:var(--rose);color:var(--white);}
+
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+
+.eyebrow{
+  font-family:var(--sans);
+  font-size:0.72rem;
+  letter-spacing:0.32em;
+  text-transform:uppercase;
+  color:var(--sage-deep);
+  font-weight:500;
+}
+
+h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.05;}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 6vw;}
+
+/* ============ REDUCED MOTION ============ */
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+}
+
+/* ============ SEAL INTRO ============ */
+#seal-intro{
+  position:fixed;inset:0;
+  background:#2B2320;
+  z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity 1.1s ease, visibility 1.1s ease;
+}
+#seal-intro.hide{opacity:0;visibility:hidden;pointer-events:none;}
+
+.seal{
+  position:relative;
+  width:150px;height:150px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  animation:seal-in 1s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes seal-in{
+  from{opacity:0;transform:scale(0.6);}
+  to{opacity:1;transform:scale(1);}
+}
+.seal::before{
+  content:'';
+  position:absolute;inset:0;
+  border-radius:50%;
+  background:radial-gradient(circle at 32% 28%, #D0996A, var(--gold) 55%, #8f6a34 100%);
+  box-shadow:0 10px 40px rgba(0,0,0,0.45), inset 0 2px 6px rgba(255,255,255,0.35), inset 0 -8px 16px rgba(0,0,0,0.35);
+}
+.seal-crack{
+  position:absolute;inset:0;
+  border-radius:50%;
+  overflow:hidden;
+  opacity:0;
+}
+.seal.cracking .seal-crack{opacity:1;}
+.seal-mono{
+  position:relative;z-index:2;
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:2.6rem;
+  color:rgba(43,25,10,0.85);
+  letter-spacing:0.02em;
+  user-select:none;
+}
+.seal.cracking{animation:seal-shake 0.5s ease;}
+@keyframes seal-shake{
+  0%,100%{transform:rotate(0);}
+  20%{transform:rotate(-3deg);}
+  40%{transform:rotate(3deg);}
+  60%{transform:rotate(-2deg);}
+  80%{transform:rotate(2deg);}
+}
+.seal-half{
+  position:absolute;top:0;width:50%;height:100%;
+  background:radial-gradient(circle at 32% 28%, #D0996A, var(--gold) 55%, #8f6a34 100%);
+  transition:transform 1s cubic-bezier(.6,0,.3,1), opacity 1s ease;
+  }
+.seal-half.left{left:0;border-radius:150px 0 0 150px;transform-origin:left center;}
+.seal-half.right{right:0;border-radius:0 150px 150px 0;transform-origin:right center;}
+.seal.open .seal-half.left{transform:translateX(-140%) rotate(-25deg);opacity:0;}
+.seal.open .seal-half.right{transform:translateX(140%) rotate(25deg);opacity:0;}
+.seal.open .seal-mono, .seal.open .seal-prompt{opacity:0;}
+
+.seal-prompt{
+  position:absolute;
+  bottom:-3rem;
+  left:50%;transform:translateX(-50%);
+  white-space:nowrap;
+  font-family:var(--sans);
+  font-size:0.7rem;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:rgba(251,246,238,0.55);
+  transition:opacity 0.4s ease;
+  animation:prompt-pulse 2s ease-in-out infinite;
+}
+@keyframes prompt-pulse{
+  0%,100%{opacity:0.4;}
+  50%{opacity:0.9;}
+}
+
+/* ============ NAVIGATION & THEME TOGGLE ============ */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.4rem 6vw;
+  background:transparent;
+  transition:background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
+}
+nav.scrolled{
+  background:var(--parchment);
+  backdrop-filter:blur(10px);
+  padding:0.9rem 6vw;
+  box-shadow:0 1px 0 var(--line);
+}
+.nav-mono{font-family:var(--serif);font-style:italic;font-size:1.3rem;}
+.nav-right-controls{display:flex;align-items:center;gap:1.5rem;}
+.nav-links{display:flex;gap:2.4rem;list-style:none;}
+.nav-links a{
+  font-size:0.78rem;letter-spacing:0.14em;text-transform:uppercase;
+  position:relative;padding-bottom:4px;
+}
+.nav-links a::after{
+  content:'';position:absolute;left:0;bottom:0;width:0;height:1px;
+  background:var(--rose);transition:width 0.35s ease;
+}
+.nav-links a:hover::after{width:100%;}
+.nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;z-index:600;}
+.nav-toggle span{width:24px;height:1.5px;background:var(--ink);transition:all 0.3s ease;}
+
+.theme-toggle-btn {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+.theme-toggle-btn:hover {
+  border-color: var(--rose);
+  color: var(--rose);
+}
+
+/* ============ HERO SECTION ============ */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  padding:6rem 6vw 4rem;
+  overflow:hidden;
+  background: linear-gradient(rgba(20, 15, 12, 0.55), rgba(20, 15, 12, 0.55)),
+              url('wedding-background.jpg') center/cover no-repeat;
+  background-color: #3a2e26;
+  color: #FFFFFF;
+}
+.hero .eyebrow{
+  color: #E2D7C5;
+  margin-bottom:1.4rem;
+}
+.hero-vine{
+  position:absolute;
+  opacity:0.6;
+  color: #E2D7C5;
+}
+.hero-vine.top{top:2rem;left:50%;transform:translateX(-50%);width:min(90vw,340px);}
+.hero-names{
+  font-size:clamp(3rem, 8vw, 6.5rem);
+  letter-spacing:0.01em;
+  display:flex;align-items:center;gap:clamp(0.6rem,3vw,1.6rem);
+  flex-wrap:wrap;justify-content:center;
+  color: #FFFFFF;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.hero-names .amp{
+  font-style:italic;color:var(--rose);font-size:0.7em;
+}
+.hero-date{
+  margin-top:1.8rem;
+  font-family:var(--sans);
+  font-size:0.95rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:#F3EFEA;
+  display:flex;align-items:center;gap:0.9rem;
+}
+.hero-date .dot{width:4px;height:4px;border-radius:50%;background:var(--rose);}
+.hero-sub{
+  margin-top:1.5rem;
+  font-size:1.05rem;
+  max-width:38ch;
+  line-height:1.7;
+  color:#F3EFEA;
+  opacity:0.95;
+}
+
+/* ============ COUNTDOWN TIMER ============ */
+.countdown-container {
+  margin-top: 2.2rem;
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.timer-box {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 8px;
+  padding: 0.8rem 1.2rem;
+  min-width: 75px;
+  text-align: center;
+}
+.timer-number {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #FFFFFF;
+  font-variant-numeric: tabular-nums;
+}
+.timer-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #E2D7C5;
+  margin-top: 0.4rem;
+}
+.wedding-day-message {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 600;
+  color: var(--rose);
+  letter-spacing: 0.08em;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.03); }
+}
+
+.hero-action-btn {
+  margin-top: 2.2rem;
+  display: inline-block;
+  background: var(--rose);
+  color: #FFFFFF;
+  padding: 0.9rem 2.2rem;
+  border-radius: 40px;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.hero-action-btn:hover {
+  background: var(--gold);
+  transform: translateY(-2px);
+}
+
+.scroll-cue{
+  position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.6rem;
+  font-size:0.68rem;letter-spacing:0.24em;text-transform:uppercase;color:#E2D7C5;
+}
+.scroll-cue .line{width:1px;height:38px;background:rgba(255,255,255,0.4);position:relative;overflow:hidden;}
+.scroll-cue .line::after{
+  content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;
+  background:var(--rose);animation:cue 1.8s ease-in-out infinite;
+}
+@keyframes cue{
+  0%{top:-100%;}
+  60%{top:100%;}
+  100%{top:100%;}
+}
+
+/* reveal-on-scroll */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.9s ease, transform 0.9s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:0.12s;}
+.reveal-delay-2{transition-delay:0.24s;}
+.reveal-delay-3{transition-delay:0.36s;}
+
+/* ============ SECTION SHELL ============ */
+section{position:relative;padding:7rem 0;}
+.section-head{text-align:center;max-width:640px;margin:0 auto 4rem;}
+.section-head h2{font-size:clamp(2.2rem,5vw,3.4rem);margin-top:0.6rem;}
+.divider{
+  width:64px;height:1px;background:var(--line);margin:1.6rem auto 0;
+  position:relative;
+}
+.divider::before{
+  content:'✦';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:0.7rem;color:var(--rose);background:var(--parchment);padding:0 10px;
+}
+
+/* ============ ABOUT THE COUPLE SECTION ============ */
+.about-section{background:var(--white);}
+.couple-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.couple-card {
+  text-align: center;
+  padding: 2.5rem 2rem;
+  background: var(--parchment);
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  transition: transform 0.4s ease;
+}
+.couple-card:hover {
+  transform: translateY(-5px);
+}
+.img-wrapper {
+  width: 220px;
+  height: 220px;
+  margin: 0 auto 1.8rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--rose);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  background: var(--parchment-deep);
+}
+.couple-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.couple-card h3 {
+  font-size: 2rem;
+  margin-bottom: 0.4rem;
+}
+.couple-card .role {
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+  margin-bottom: 1rem;
+}
+.couple-card p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--ink);
+  opacity: 0.85;
+}
+
+.our-story-banner {
+  grid-column: 1 / -1;
+  text-align: center;
+  max-width: 760px;
+  margin: 3rem auto 0;
+  padding: 2.5rem 2rem;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.our-story-banner p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.45rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+/* ============ GALLERY SECTION ============ */
+.gallery-section {
+  background: var(--parchment-deep);
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+.gallery-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  aspect-ratio: 4/5;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.gallery-item:hover img {
+  transform: scale(1.08);
+}
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(43, 35, 32, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: var(--white);
+  font-size: 1.5rem;
+}
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+/* Lightbox Modal */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.lightbox.open {
+  display: flex;
+}
+.lightbox img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 4px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.lightbox-close {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  color: var(--white);
+  font-size: 2rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* ============ DETAILS ============ */
+.details{background:var(--parchment);}
+.details-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;
+  max-width:var(--maxw);margin:0 auto;
+}
+.detail-card{
+  background:var(--white);
+  border-radius:6px;
+  padding:2.6rem 2rem;
+  text-align:center;
+  box-shadow:var(--shadow);
+  border: 1px solid var(--line);
+  transition:transform 0.4s ease;
+}
+.detail-card:hover{transform:translateY(-6px);}
+.detail-icon{
+  font-size: 2rem;
+  margin:0 auto 1.2rem;
+  color:var(--rose);
+}
+.detail-card h3{font-size:1.6rem;margin-bottom:0.5rem;}
+.detail-card .when{
+  font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--sage-deep);margin-bottom:1rem;font-family:var(--sans);
+}
+.detail-card p{color:var(--ink);opacity:0.85;font-size:0.95rem;line-height:1.7;}
+
+/* ============ GUEST WISHES & FORM SECTION ============ */
+.wishes-section {
+  background: var(--parchment-deep);
+}
+.wishes-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+/* Send a Wish Form */
+.form-container {
+  background: var(--white);
+  padding: 2.8rem 2.2rem;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.form-container h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+.form-group {
+  margin-bottom: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.form-group label {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+}
+.form-control {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: var(--parchment);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease;
+}
+.form-control:focus {
+  outline: none;
+  border-color: var(--rose);
+}
+textarea.form-control {
+  min-height: 110px;
+  resize: vertical;
+}
+.char-counter {
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--sage-deep);
+  margin-top: 0.2rem;
+}
+.error-text {
+  color: #D9534F;
+  font-size: 0.8rem;
+  display: none;
+}
+.error-text.show{ display:block; }
+.form-control.invalid{ border-color:#D9534F; }
+.success-banner {
+  display: none;
+  background: rgba(201, 138, 125, 0.15);
+  border: 1px solid var(--rose);
+  color: var(--ink);
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+.success-banner.show{ display:block; }
+.submit-btn {
+  width: 100%;
+  background: var(--rose);
+  color: var(--white);
+  border: none;
+  padding: 1rem;
+  border-radius: 4px;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.submit-btn:hover {
+  background: var(--gold);
+  transform: translateY(-2px);
+}
+.submit-btn:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+  transform:none;
+}
+
+/* Guestbook Display Feed */
+.feed-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.8rem;
+  flex-wrap: wrap;
+}
+.search-box {
+  flex: 1;
+  min-width: 180px;
+}
+.filter-select {
+  width: auto;
+}
+
+.wishes-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-height: 620px;
+  overflow-y: auto;
+  padding-right: 0.4rem;
+}
+.empty-feed{
+  text-align:center;
+  padding:3rem 1rem;
+  color:var(--sage-deep);
+  font-style:italic;
+  font-family:var(--serif);
+  font-size:1.1rem;
+}
+
+.wish-card {
+  background: var(--white);
+  padding: 1.8rem;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  animation: slideIn 0.4s ease-out;
+  position: relative;
+}
+@keyframes slideIn {
+  from { opacity:0; transform:translateX(20px); }
+  to { opacity:1; transform:translateX(0); }
+}
+
+.wish-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  gap: 0.6rem;
+}
+.guest-name {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+.wish-category {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--parchment-deep);
+  color: var(--sage-deep);
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+.wish-message {
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--ink);
+  opacity: 0.9;
+  margin-bottom: 1rem;
+  font-style: italic;
+  word-wrap: break-word;
+}
+.wish-image-container {
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  overflow: hidden;
+  max-height: 250px;
+  cursor: pointer;
+}
+.wish-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.wish-image-container:hover img {
+  transform: scale(1.03);
+}
+
+.wish-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  color: var(--sage-deep);
+  border-top: 1px solid var(--line);
+  padding-top: 0.8rem;
+}
+.delete-btn {
+  background: none;
+  border: none;
+  color: #D9534F;
+  cursor: pointer;
+  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+.delete-btn:hover { opacity: 1; }
+
+/* ============ FOOTER ============ */
+footer{
+  background:var(--parchment);
+  text-align:center;
+  padding:4rem 6vw 2.6rem;
+  border-top: 1px solid var(--line);
+}
+.footer-mono{font-family:var(--serif);font-style:italic;font-size:2rem;margin-bottom:0.6rem;}
+footer p{font-size:0.82rem;color:var(--ink);opacity:0.75;letter-spacing:0.04em;}
+footer .heart{color:var(--rose);}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:900px){
+  .couple-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .details-grid{ grid-template-columns:1fr; }
+  .wishes-wrapper { grid-template-columns: 1fr; }
+}
+@media (max-width:760px){
+  .nav-links{
+    position:fixed;top:0;right:0;height:100vh;width:min(78vw,320px);
+    background:var(--parchment);
+    flex-direction:column;justify-content:center;align-items:flex-start;
+    padding:2rem 3rem;gap:1.8rem;
+    transform:translateX(100%);
+    transition:transform 0.45s cubic-bezier(.4,0,.2,1);
+    box-shadow:-10px 0 40px rgba(0,0,0,0.15);
+  }
+  .nav-links.open{transform:translateX(0);}
+  .nav-toggle{display:flex;}
+  .nav-toggle.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+  .feed-controls { flex-direction: column; }
+  .countdown-container { gap: 0.6rem; }
+  .timer-box { min-width: 60px; padding: 0.6rem 0.8rem; }
+  .timer-number { font-size: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ SEAL INTRO ============ -->
+<div id="seal-intro">
+  <div class="seal" id="seal">
+    <div class="seal-half left"></div>
+    <div class="seal-half right"></div>
+    <span class="seal-mono">M&amp;A</span>
+    <span class="seal-prompt" id="sealPrompt">Tap the seal to begin</span>
+  </div>
+</div>
+
+<!-- ============ NAVIGATION ============ -->
+<nav id="nav">
+  <a href="#" class="nav-mono">M &amp; A</a>
+
+  <div class="nav-right-controls">
+    <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme">
+      <i class="fa-solid fa-moon"></i>
+    </button>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#details">Details</a></li>
+    <li><a href="#guestbook">Guestbook</a></li>
+  </ul>
+</nav>
+
+<!-- ============ HERO SECTION ============ -->
+<section class="hero">
+  <svg class="hero-vine top" viewBox="0 0 340 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 20 Q 85 -10 170 20 T 330 20" stroke="currentColor" stroke-width="1"/>
+    <circle cx="170" cy="20" r="3" fill="currentColor"/>
+    <circle cx="90" cy="10" r="2" fill="currentColor"/>
+    <circle cx="250" cy="10" r="2" fill="currentColor"/>
+  </svg>
+
+  <p class="eyebrow reveal">Together with their families</p>
+  <h1 class="hero-names reveal reveal-delay-1">Maame Afua <span class="amp">&amp;</span> Akoi Barimah</h1>
+  <p class="hero-date reveal reveal-delay-2">
+    <span>24 December 2026</span><span class="dot"></span><span>Accra, Ghana</span>
+  </p>
+  <p class="hero-sub reveal reveal-delay-3">Invite you to celebrate their special day and share in the joy of their new beginning.</p>
+
+  <!-- COUNTDOWN TIMER CONTAINER -->
+  <div class="countdown-container reveal reveal-delay-3" id="countdown">
+    <div class="timer-box">
+      <div class="timer-number" id="days">00</div>
+      <div class="timer-label">Days</div>
+    </div>
+    <div class="timer-box">
+      <div class="timer-number" id="hours">00</div>
+      <div class="timer-label">Hours</div>
+    </div>
+    <div class="timer-box">
+      <div class="timer-number" id="minutes">00</div>
+      <div class="timer-label">Mins</div>
+    </div>
+    <div class="timer-box">
+      <div class="timer-number" id="seconds">00</div>
+      <div class="timer-label">Secs</div>
+    </div>
+  </div>
+
+  <a href="#guestbook" class="hero-action-btn reveal reveal-delay-3"><i class="fa-regular fa-paper-plane"></i> Send Your Wishes</a>
+
+</section>
+
+<!-- ============ ABOUT THE COUPLE ============ -->
+<section class="about-section" id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">The Happy Couple</p>
+      <h2>Meet Bride &amp; Groom</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="couple-grid">
+      <!-- BRIDE CARD -->
+      <div class="couple-card reveal">
+        <div class="img-wrapper">
+          <img src="bride-profile.jpg" alt="Maame Afua - Bride" class="couple-img">
+        </div>
+        <h3>Maame Afua</h3>
+        <p class="role">The Bride</p>
+        <p>A radiant heart with an endless love for family, laughter, and bringing people together.</p>
+      </div>
+
+      <!-- GROOM CARD -->
+      <div class="couple-card reveal reveal-delay-1">
+        <div class="img-wrapper">
+          <img src="groom-profile.jpg" alt="Akoi Barimah - Groom" class="couple-img">
+        </div>
+        <h3>Akoi Barimah</h3>
+        <p class="role">The Groom</p>
+        <p>A steadfast spirit whose kindness, dedication, and humor anchor their joint journey.</p>
+      </div>
+
+      <!-- STORY BANNER -->
+      <div class="our-story-banner reveal">
+        <p>"From friendship to love, Maame Afua and Akoi Barimah have shared years of beautiful memories. Now they're beginning a new chapter together."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PHOTO GALLERY SECTION ============ -->
+<section class="gallery-section" id="gallery">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Moments &amp; Memories</p>
+      <h2>Photo Gallery</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="gallery-grid reveal">
+      <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" alt="Couple Moment 1">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80" alt="Couple Moment 2">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=800&q=80" alt="Couple Moment 3">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800&q=80" alt="Couple Moment 4">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80" alt="Couple Moment 5">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-item" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800&q=80" alt="Couple Moment 6">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX MODAL -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <img id="lightboxImg" src="" alt="Enlarged Photo">
+</div>
+
+<!-- ============ WEDDING DETAILS ============ -->
+<section class="details" id="details">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Wedding Information</p>
+      <h2>The Event Details</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="details-grid">
+      <div class="detail-card reveal">
+        <i class="fa-solid fa-calendar-day detail-icon"></i>
+        <div class="when">Date</div>
+        <h3>24 December 2026</h3>
+        <p>Thursday Afternoon</p>
+      </div>
+
+      <div class="detail-card reveal reveal-delay-1">
+        <i class="fa-solid fa-clock detail-icon"></i>
+        <div class="when">Time</div>
+        <h3>2:00 PM</h3>
+        <p>Ceremony Begins Promptly</p>
+      </div>
+
+      <div class="detail-card reveal reveal-delay-2">
+        <i class="fa-solid fa-location-dot detail-icon"></i>
+        <div class="when">Venue</div>
+        <h3>The Grand Palace</h3>
+        <p>Accra, Greater Accra Region, Ghana</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GUEST WISHES & FORM ============ -->
+<section class="wishes-section" id="guestbook">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Digital Guestbook</p>
+      <h2>Well Wishes &amp; Prayers</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="wishes-wrapper">
+
+      <!-- SEND A WISH FORM -->
+      <div class="form-container reveal">
+        <h3>Send Your Blessings</h3>
+
+        <div id="successBanner" class="success-banner">
+          ♥ Your wishes have been sent successfully!
+        </div>
+
+        <form id="wishForm" novalidate>
+          <div class="form-group">
+            <label for="guestName">Your Name *</label>
+            <input type="text" id="guestName" class="form-control" placeholder="Enter your name">
+            <div id="nameError" class="error-text">Please enter your name (at least 2 characters).</div>
+          </div>
+
+          <div class="form-group">
+            <label for="guestEmail">Email Address *</label>
+            <input type="email" id="guestEmail" class="form-control" placeholder="example@domain.com">
+            <div id="emailError" class="error-text">Please enter a valid email address.</div>
+          </div>
+
+          <div class="form-group">
+            <label for="categorySelect">Category</label>
+            <select id="categorySelect" class="form-control">
+              <option value="Congratulations">Congratulations</option>
+              <option value="Prayers">Prayers</option>
+              <option value="Love">Love</option>
+            </select>
+          </div>
+
+          <!-- PHOTO UPLOAD INPUT -->
+          <div class="form-group">
+            <label for="guestImage">Add Photo of the Couple (Optional)</label>
+            <input type="file" id="guestImage" class="form-control" accept="image/*">
+            <div id="imagePreviewWrap" style="display:none; margin-top:0.6rem;">
+              <img id="imagePreview" style="max-width:100%; max-height:160px; border-radius:6px; object-fit:cover;" alt="Preview">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="guestMessage">Write your message to the couple… *</label>
+            <textarea id="guestMessage" class="form-control" maxlength="300" placeholder="Write your warm wishes..."></textarea>
+            <div class="char-counter"><span id="charCount">0</span> / 300 characters</div>
+            <div id="messageError" class="error-text">Please write a message (at least 5 characters).</div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">Send My Wishes</button>
+        </form>
+      </div>
+
+      <!-- DISPLAY SUBMITTED WISHES FEED -->
+      <div class="feed-container reveal reveal-delay-1">
+        <div class="feed-controls">
+          <input type="text" id="searchInput" class="form-control search-box" placeholder="Search by name...">
+          <select id="filterSelect" class="form-control filter-select">
+            <option value="All">All Messages</option>
+            <option value="Congratulations">Congratulations</option>
+            <option value="Prayers">Prayers</option>
+            <option value="Love">Love</option>
+          </select>
+        </div>
+
+        <div id="wishesFeed" class="wishes-feed">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-mono">Maame Afua &amp; Akoi Barimah</div>
+  <p>Made with <span class="heart">♥</span> for our special day — 24 December 2026</p>
+</footer>
+
+<!-- ============ JAVASCRIPT ============ -->
+<script>
+/* ============ SEAL INTRO ============ */
+const seal = document.getElementById('seal');
+const sealIntro = document.getElementById('seal-intro');
+
+function openSeal(){
+  if(seal.classList.contains('open')) return;
+  seal.classList.add('cracking');
+  setTimeout(()=>{
+    seal.classList.add('open');
+  }, 380);
+  setTimeout(()=>{
+    sealIntro.classList.add('hide');
+    document.body.style.overflow = 'auto';
+  }, 1300);
+}
+seal.addEventListener('click', openSeal);
+document.body.style.overflow = 'hidden';
+
+const autoTimer = setTimeout(openSeal, 4200);
+seal.addEventListener('click', ()=> clearTimeout(autoTimer));
+
+/* ============ NAV SCROLL & MOBILE TOGGLE ============ */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', ()=>{
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', ()=>{
+  navToggle.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click', ()=>{
+    navToggle.classList.remove('open');
+    navLinks.classList.remove('open');
+  });
+});
+
+/* ============ THEME TOGGLE ============ */
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const themeIcon = themeToggleBtn.querySelector('i');
+function setTheme(dark){
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  themeIcon.className = dark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+}
+let isDark = false;
+setTheme(isDark);
+themeToggleBtn.addEventListener('click', ()=>{
+  isDark = !isDark;
+  setTheme(isDark);
+});
+
+/* ============ REVEAL ON SCROLL ============ */
+const revealEls = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('in');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+revealEls.forEach(el => revealObserver.observe(el));
+
+/* ============ COUNTDOWN TIMER ============ */
+const weddingDate = new Date('December 24, 2026 14:00:00').getTime();
+const countdownEl = document.getElementById('countdown');
+let countdownFired = false;
+
+function updateCountdown() {
+  const now = new Date().getTime();
+  const distance = weddingDate - now;
+
+  if (distance < 0) {
+    if(!countdownFired){
+      countdownFired = true;
+      countdownEl.innerHTML = '<div class="wedding-day-message">IT\'S OUR WEDDING DAY!</div>';
+    }
+    return;
+  }
+
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  const daysEl = document.getElementById('days');
+  const hoursEl = document.getElementById('hours');
+  const minutesEl = document.getElementById('minutes');
+  const secondsEl = document.getElementById('seconds');
+  if(daysEl) daysEl.textContent = String(days).padStart(2, '0');
+  if(hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+  if(minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+  if(secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* ============ GALLERY LIGHTBOX ============ */
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxClose = document.getElementById('lightboxClose');
+
+function openLightbox(itemEl){
+  const img = itemEl.querySelector('img');
+  lightboxImg.src = img.src;
+  lightboxImg.alt = img.alt;
+  lightbox.classList.add('open');
+}
+function closeLightbox(){
+  lightbox.classList.remove('open');
+  lightboxImg.src = '';
+}
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e)=>{
+  if(e.target === lightbox) closeLightbox();
+});
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape') closeLightbox();
+});
+
+/* ============ GUESTBOOK (MYSQL / BACKEND CONNECTED) ============ */
+const API_BASE_URL = 'http://localhost:5000';
+
+
+const wishForm = document.getElementById('wishForm');
+const guestName = document.getElementById('guestName');
+const guestEmail = document.getElementById('guestEmail');
+const categorySelect = document.getElementById('categorySelect');
+const guestImage = document.getElementById('guestImage');
+const imagePreviewWrap = document.getElementById('imagePreviewWrap');
+const imagePreview = document.getElementById('imagePreview');
+const guestMessage = document.getElementById('guestMessage');
+const charCount = document.getElementById('charCount');
+const successBanner = document.getElementById('successBanner');
+const submitBtn = document.getElementById('submitBtn');
+const wishesFeed = document.getElementById('wishesFeed');
+const searchInput = document.getElementById('searchInput');
+const filterSelect = document.getElementById('filterSelect');
+
+let wishes = [];
+
+// Fetch all wishes from the MySQL backend database
+async function fetchWishes() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/wishes`);
+    if (!response.ok) throw new Error('Failed to fetch wishes');
+    wishes = await response.json();
+    renderWishes();
+  } catch (err) {
+    console.error(err);
+    wishesFeed.innerHTML = '<div class="empty-feed">Unable to load wishes at this time. Please check your backend connection.</div>';
+  }
+}
+
+// Character counter
+guestMessage.addEventListener('input', ()=>{
+  charCount.textContent = guestMessage.value.length;
+});
+
+// Image preview
+guestImage.addEventListener('change', ()=>{
+  const file = guestImage.files[0];
+  if(!file){
+    imagePreviewWrap.style.display = 'none';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e)=>{
+    imagePreview.src = e.target.result;
+    imagePreviewWrap.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+});
+
+function setFieldError(inputEl, errorEl, show){
+  inputEl.classList.toggle('invalid', show);
+  errorEl.classList.toggle('show', show);
+}
+
+function validateEmail(value){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function validateForm(){
+  let valid = true;
+
+  const nameOk = guestName.value.trim().length >= 2;
+  setFieldError(guestName, document.getElementById('nameError'), !nameOk);
+  if(!nameOk) valid = false;
+
+  const emailOk = validateEmail(guestEmail.value.trim());
+  setFieldError(guestEmail, document.getElementById('emailError'), !emailOk);
+  if(!emailOk) valid = false;
+
+  const messageOk = guestMessage.value.trim().length >= 5;
+  setFieldError(guestMessage, document.getElementById('messageError'), !messageOk);
+  if(!messageOk) valid = false;
+
+  return valid;
+}
+
+function timeAgo(dateString){
+  const date = new Date(dateString);
+  const seconds = Math.floor((new Date() - date) / 1000);
+  const intervals = [
+    ['year', 31536000], ['month', 2592000], ['day', 86400],
+    ['hour', 3600], ['minute', 60]
+  ];
+  for(const [label, secs] of intervals){
+    const count = Math.floor(seconds / secs);
+    if(count >= 1) return `${count} ${label}${count > 1 ? 's' : ''} ago`;
+  }
+  return 'just now';
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function renderWishes(){
+  const searchTerm = searchInput.value.trim().toLowerCase();
+  const filterVal = filterSelect.value;
+
+  const filtered = wishes.filter(w=>{
+    const matchesSearch = !searchTerm || w.name.toLowerCase().includes(searchTerm);
+    const matchesFilter = filterVal === 'All' || w.category === filterVal;
+    return matchesSearch && matchesFilter;
+  });
+
+  if(filtered.length === 0){
+    wishesFeed.innerHTML = '<div class="empty-feed">No wishes found — be the first to send your blessings.</div>';
+    return;
+  }
+
+  wishesFeed.innerHTML = filtered.map(w => {
+    const fullImgUrl = w.image_url ? `${API_BASE_URL}${w.image_url}` : null;
+    return `
+      <div class="wish-card" data-id="${w.id}">
+        <div class="wish-header">
+          <span class="guest-name">${escapeHtml(w.name)}</span>
+          <span class="wish-category">${escapeHtml(w.category)}</span>
+        </div>
+        <p class="wish-message">"${escapeHtml(w.message)}"</p>
+        ${fullImgUrl ? `<div class="wish-image-container" onclick="openLightboxSrc('${fullImgUrl}')"><img src="${fullImgUrl}" alt="Photo from ${escapeHtml(w.name)}"></div>` : ''}
+        <div class="wish-footer">
+          <span>${timeAgo(w.created_at)}</span>
+          <button class="delete-btn" onclick="deleteWish(${w.id})"><i class="fa-solid fa-trash"></i> Remove</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openLightboxSrc(src){
+  lightboxImg.src = src;
+  lightboxImg.alt = 'Guest photo';
+  lightbox.classList.add('open');
+}
+
+// Delete a wish record from the MySQL database
+async function deleteWish(id){
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/wishes/${id}`, { method: 'DELETE' });
+    if (response.ok) {
+      wishes = wishes.filter(w => w.id !== id);
+      renderWishes();
+    }
+  } catch (err) {
+    console.error('Failed to delete wish:', err);
+  }
+}
+
+// Submit a new wish via HTTP POST (using FormData for optional image upload)
+wishForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  if(!validateForm()) return;
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending...';
+
+  const formData = new FormData();
+  formData.append('name', guestName.value.trim());
+  formData.append('email', guestEmail.value.trim());
+  formData.append('category', categorySelect.value);
+  formData.append('message', guestMessage.value.trim());
+  if (guestImage.files[0]) {
+    formData.append('image', guestImage.files[0]);
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/wishes`, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (response.ok) {
+      const savedWish = await response.json();
+      wishes.unshift(savedWish);
+      renderWishes();
+
+      wishForm.reset();
+      charCount.textContent = '0';
+      imagePreviewWrap.style.display = 'none';
+      [guestName, guestEmail, guestMessage].forEach(el => el.classList.remove('invalid'));
+      document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
+
+      successBanner.classList.add('show');
+      setTimeout(()=> successBanner.classList.remove('show'), 4000);
+    }
+  } catch (err) {
+    console.error('Error submitting wish:', err);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Send My Wishes';
+  }
+});
+
+searchInput.addEventListener('input', renderWishes);
+filterSelect.addEventListener('change', renderWishes);
+
+// Load existing wishes from the server on startup
+fetchWishes();
+</script>
+
+</body>
+</html>
